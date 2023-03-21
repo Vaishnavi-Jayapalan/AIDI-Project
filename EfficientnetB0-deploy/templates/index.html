@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>EfficentNetB0 Model Prediction</title>
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>EfficentNetB0 Model Prediction</h1>
+      <form method="POST" enctype="multipart/form-data" id="upload-form">
+        <input type="file" id="file-input" name="file" accept=".jpg,.jpeg,.png" required>
+        <input type="submit" id="submit-button" value="Predict">
+      </form>
+      <div id="result-container" class="hidden">
+        <h3>Prediction:</h3>
+        <p id="result"></p>
+        <img id="image" src="">
+      </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </body>
+</html>
