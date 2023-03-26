@@ -31,42 +31,29 @@ app = Flask(__name__)
 MODEL_PATH = 'models/EfficientnetB0.h5'
 
 # Load your trained model
-#model = load_model(MODEL_PATH)
-# Load the model and make a prediction
+
 custom_objects = {'FixedDropout': tf.keras.layers.Dropout}  # Add the custom object
 model = tf.keras.models.load_model(MODEL_PATH, custom_objects=custom_objects)
-#model._make_predict_function()          # Necessary
-# print('Model loaded. Start serving...')
 
 # Load the list of species names
 species_path="class_info/name_of_spesies.txt"
 with open(species_path, 'r') as f:
     species_list = [line.strip() for line in f]
 
-# You can also use pretrained model from Keras
-# Check https://keras.io/applications/
-
 print('Model loaded. Check http://127.0.0.1:5000/')
 
 
 def model_predict(img_path, model):
-    #img = image.load_img(img_path, target_size=(256, 256))
+
     # Load the image
-    print("In model_predict function")
+    # Preprocessing the image
     img = tf.keras.preprocessing.image.load_img(img_path, target_size=(256, 256))
     x = tf.keras.preprocessing.image.img_to_array(img)
     x = np.expand_dims(x, axis=0)
     train_datagen= ImageDataGenerator(rescale=1.0/255)
     x = train_datagen.flow(x, shuffle=False).next()
-    # Preprocessing the image
-    #x = image.img_to_array(img)
-    # x = np.true_divide(x, 255)
-    #x = np.expand_dims(x, axis=0)
-
-    # Be careful how your trained model deals with the input
-    # otherwise, it won't make correct prediction!
-    x = preprocess_input(x, mode='caffe')
-
+    
+    # Predicting the class
     preds = model.predict(x)
     return preds
 
@@ -92,10 +79,6 @@ def upload():
         # Make prediction
         preds = model_predict(file_path, model)
 
-        # Process your result for human
-        # pred_class = preds.argmax(axis=-1)            # Simple argmax
-#        pred_class = decode_predictions(preds, top=1)   # ImageNet Decode
-#        result = str(pred_class[0][0][1])               # Convert to string
         # Get the predicted class name
         pred_class_idx = np.argmax(preds)
         pred_class = species_list[pred_class_idx]
