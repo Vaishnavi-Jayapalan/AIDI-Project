@@ -85,7 +85,7 @@ def upload():
         pred_class = species_list[pred_class_idx]
         result = str(pred_class)
 
-        return Response(result)
+        return Response(result, content_type='text/plain')
     except Exception as e:
         return e
 
