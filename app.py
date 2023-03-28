@@ -84,10 +84,10 @@ def upload():
         pred_class_idx = np.argmax(preds)
         pred_class = species_list[pred_class_idx]
         result = str(pred_class)
-
+        print("result", result)
         return Response(result, content_type='text/plain')
     except Exception as e:
-        return e
+        return Response(e)
 
 if __name__ == '__main__':
     app.run(debug=True)
