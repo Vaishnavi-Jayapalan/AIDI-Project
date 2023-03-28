@@ -87,7 +87,7 @@ def upload():
         print("result", result)
         return Response(result, content_type='text/plain')
     except Exception as e:
-        return Response(e)
+        return Response(str(e), content_type="text/plain")
 
 if __name__ == '__main__':
     app.run(debug=True)
