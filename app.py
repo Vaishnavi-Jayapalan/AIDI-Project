@@ -64,28 +64,30 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/predict', methods=['GET', 'POST'])
+@app.route('/predict', methods=['POST'])
 def upload():
-    if request.method == 'POST':
-        # Get the file from post request
-        f = request.files['file']
+    try:
+        if request.method == 'POST':
+            # Get the file from post request
+            f = request.files['file']
 
-        # Save the file to ./uploads
-        basepath = os.path.dirname(__file__)
-        file_path = os.path.join(
-            basepath, 'uploads', secure_filename(f.filename))
-        f.save(file_path)
+            # Save the file to ./uploads
+            basepath = os.path.dirname(__file__)
+            file_path = os.path.join(
+                basepath, 'uploads', secure_filename(f.filename))
+            f.save(file_path)
 
-        # Make prediction
-        preds = model_predict(file_path, model)
+            # Make prediction
+            preds = model_predict(file_path, model)
 
-        # Get the predicted class name
-        pred_class_idx = np.argmax(preds)
-        pred_class = species_list[pred_class_idx]
-        result = str(pred_class)
-        return result
-    return None
-
+            # Get the predicted class name
+            pred_class_idx = np.argmax(preds)
+            pred_class = species_list[pred_class_idx]
+            result = str(pred_class)
+            return result
+        return None
+    except Exception as e:
+        return e
 
 if __name__ == '__main__':
     app.run(debug=True)
