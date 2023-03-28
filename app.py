@@ -23,6 +23,7 @@ from tensorflow.keras.preprocessing import image
 #from tensorflow.keras.applications.efficientnet import preprocess_input
 from keras.preprocessing.image import ImageDataGenerator
 import tensorflow as tf
+from flask import Response 
 
 # Define a flask app
 app = Flask(__name__)
@@ -83,8 +84,8 @@ def upload():
         pred_class_idx = np.argmax(preds)
         pred_class = species_list[pred_class_idx]
         result = str(pred_class)
-        
-        return {"image": result}
+
+        return Response(result)
     except Exception as e:
         return e
 
