@@ -84,7 +84,7 @@ def upload():
             pred_class_idx = np.argmax(preds)
             pred_class = species_list[pred_class_idx]
             result = str(pred_class)
-            return result
+            return {"image": result}
         return None
     except Exception as e:
         return e
